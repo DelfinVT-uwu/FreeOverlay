@@ -22,7 +22,7 @@ Para que todo funcione correctamente, es **estrictamente necesario** tener insta
 
 ## ⚡ Instalación y Ejecución Rápida (Recomendado)
 
-Hemos creado un archivo automatizado para facilitar tu vida. No necesitas abrir la terminal ni instalar librerías manualmente.
+He creado un archivo automatizado para facilitar tu vida. No necesitas abrir la terminal ni instalar librerías manualmente.
 
 1.  Descarga o clona este repositorio.
 2.  Busca el archivo llamado **`ejecutar.bat`** (o `run.bat`).
@@ -37,7 +37,7 @@ Hemos creado un archivo automatizado para facilitar tu vida. No necesitas abrir 
 
 ---
 
-## 🛠️ Ejecución Manual (Avanzado)
+## 🛠️ Ejecución Manual
 
 Si prefieres usar la terminal o estás en un sistema operativo que no soporta archivos `.bat` (como Linux o Mac), sigue estos pasos:
 
