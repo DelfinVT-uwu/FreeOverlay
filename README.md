@@ -1,10 +1,10 @@
-# 🚀 [Nombre de tu Proyecto]
+# 🚀 [FreeOverlay]
 
 ![Python Version](https://img.shields.io/badge/python-3.12.0-blue.svg)
 ![Status](https://img.shields.io/badge/status-funcional-green.svg)
 ![Dependencies](https://img.shields.io/badge/dependencias-automáticas-orange.svg)
 
-> **Descripción breve:** Aquí puedes poner una o dos líneas explicando qué hace tu script. Por ejemplo: "Este es un bot de automatización que procesa datos de Excel y envía reportes por correo electrónico de forma rápida y sencilla."
+> **Descripción breve:** FreeOverlay es una alternativa gratuita y open-source a XSOverlay para VR. Permite ver tu pantalla dentro del visor y personalizar el color del menú, con enfoque en rendimiento y simplicidad. Actualmente en beta. Disponible para Windows, versión Linux en camino."
 
 ---
 
