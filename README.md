@@ -61,4 +61,3 @@ Si prefieres usar la terminal o estás en un sistema operativo que no soporta ar
 * `README.md`: Este archivo de instrucciones.
 
 ---
-Hecho con ❤️ en Python.
