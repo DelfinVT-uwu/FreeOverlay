@@ -1,4 +1,4 @@
-# 🚀 [FreeOverlay]
+# 🚀 FreeOverlay
 
 ![Python Version](https://img.shields.io/badge/python-3.12.0-blue.svg)
 ![Status](https://img.shields.io/badge/status-funcional-green.svg)
