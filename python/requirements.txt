@@ -1,0 +1,9 @@
+openvr
+numpy
+Pillow
+psutil
+pyautogui
+mss
+winsdk
+PyOpenGL
+glfw
