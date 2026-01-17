@@ -1,9 +1,23 @@
-openvr
-numpy
-Pillow
-psutil
-pyautogui
-mss
-winsdk
-PyOpenGL
-glfw
+# FreeOverlay Dependencies
+# Core VR and Graphics
+openvr>=1.23
+PyOpenGL>=3.1
+glfw>=2.1
+
+# Image Processing and UI
+Pillow>=9.0
+numpy>=1.21
+
+# System Monitoring
+psutil>=5.8
+
+# Input Control and Screen Capture
+pyautogui>=0.9.53
+mss>=6.2
+
+# Windows-specific
+winsdk>=1.0; sys_platform == 'win32'
+
+# Build and Packaging Tools
+pyinstaller>=5.0
+wheel>=0.37

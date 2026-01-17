@@ -1,0 +1,129 @@
+name: Build Executables
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to build (without v prefix)'
+        required: false
+
+jobs:
+  build:
+    name: Build for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            python-version: '3.10'
+            platform: Windows
+
+          - os: ubuntu-latest
+            python-version: '3.10'
+            platform: Linux
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r python/requirements.txt
+
+      - name: Install build dependencies
+        run: |
+          pip install pyinstaller setuptools wheel
+
+      - name: Extract version
+        id: version
+        shell: bash
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/v}
+          else
+            VERSION=${{ github.event.inputs.version || '9.0.0' }}
+          fi
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION"
+
+      - name: Update version in setup.py
+        shell: bash
+        run: |
+          VERSION=${{ steps.version.outputs.VERSION }}
+          sed -i "s/version=\"[^\"]*\"/version=\"$VERSION\"/" setup.py || \
+          sed -i '' "s/version=\"[^\"]*\"/version=\"$VERSION\"/" setup.py
+
+      - name: Build on Windows
+        if: matrix.platform == 'Windows'
+        shell: powershell
+        run: |
+          python scripts/build.py
+
+      - name: Build on Linux
+        if: matrix.platform == 'Linux'
+        shell: bash
+        run: |
+          python scripts/build.py
+
+      - name: List artifacts
+        shell: bash
+        run: |
+          echo "=== Distribution files ==="
+          ls -lah dist/ || echo "No dist directory"
+          echo ""
+          echo "=== Build artifacts ==="
+          du -sh build/ || echo "No build directory"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: FreeOverlay-${{ matrix.platform }}-${{ steps.version.outputs.VERSION }}
+          path: dist/
+          retention-days: 30
+
+      - name: Create Release and Upload Assets
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/*
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  release-summary:
+    name: Release Summary
+    runs-on: ubuntu-latest
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Extract version
+        id: version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Print Release Info
+        run: |
+          echo "✅ Release ${{ steps.version.outputs.VERSION }} published successfully!"
+          echo ""
+          echo "📦 Available downloads:"
+          echo "  - FreeOverlay-Windows-${{ steps.version.outputs.VERSION }}.zip"
+          echo "  - FreeOverlay-Linux-${{ steps.version.outputs.VERSION }}.tar.gz"
+          echo ""
+          echo "View at: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.ref_name }}"
